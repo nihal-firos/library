@@ -99,6 +99,9 @@ class Command(BaseCommand):
     {"title": "The Silmarillion", "author": "J.R.R. Tolkien", "genre": "Fantasy", "description": "The creation and myths of Middle-earth."}
 ]
 
+        
+        for book_data in books:
+            Book.objects.get_or_create(name=book_data['name'], defaults=book_data)
 
         for book_data in sample_books:
             book, created = Book.objects.get_or_create(

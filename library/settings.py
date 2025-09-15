@@ -32,10 +32,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 # DATABASE: use dj-database-url to parse Render's DATABASE_URL
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}'),
-        conn_max_age=600
-    )
+    "default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
