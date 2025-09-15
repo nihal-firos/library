@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Library Home{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Available Books</h2>
+
+<!-- Search -->
+<form method="get" class="d-flex mb-4">
+  <input type="text" name="q" class="form-control me-2" placeholder="Search by title, author, or genre" value="{{ request.GET.q }}">
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<!-- Book Grid -->
+<div class="row">
+  {% for book in books %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text text-muted">by {{ book.author }}</p>
+          <p><span class="badge bg-info">{{ book.genre }}</span></p>
+          <p class="card-text small">{{ book.description|truncatewords:20 }}</p>
+
+          {% if book.is_borrowed %}
+            <button class="btn btn-secondary btn-sm" disabled>Borrowed</button>
+          {% else %}
+            <a href="{% url 'borrow_book' book.id %}" class="btn btn-success btn-sm">Borrow</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No books found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

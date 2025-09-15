@@ -1,0 +1,21 @@
+{% extends 'library_app/base.html' %}
+{% block content %}
+  <h2>My borrowed books</h2>
+  {% if borrowed %}
+    <ul class="list-group">
+      {% for r in borrowed %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ r.book.title }}</strong> <br>
+            <small>Borrowed at: {{ r.borrowed_at }}</small>
+          </div>
+          <div>
+            <a class="btn btn-sm btn-outline-warning" href="{% url 'book_detail' r.book.pk %}">Details</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have not borrowed any books.</p>
+  {% endif %}
+{% endblock %}
