@@ -100,8 +100,6 @@ class Command(BaseCommand):
 ]
 
         
-        for book_data in books:
-            Book.objects.get_or_create(name=book_data['name'], defaults=book_data)
 
         for book_data in sample_books:
             book, created = Book.objects.get_or_create(
