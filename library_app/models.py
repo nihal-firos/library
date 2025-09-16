@@ -2,12 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     genre = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
     is_borrowed = models.BooleanField(default=False)
+    borrowed_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="current_borrowed_books"
+    )
 
     def __str__(self):
         return self.title

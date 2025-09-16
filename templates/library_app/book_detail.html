@@ -7,9 +7,11 @@
       <h6 class="text-muted">by {{ book.author }} — {{ book.genre }}</h6>
       <p class="mt-3">{{ book.description }}</p>
 
-      {% if active_record %}
-        <p><strong>Status:</strong> Borrowed</p>
-        <p><small>Borrowed at: {{ active_record.borrowed_at }}</small></p>
+      {% if book.is_borrowed %}
+        <p><strong>Status:</strong> Borrowed by {{ book.borrowed_by.username }}</p>
+        {% if active_record %}
+          <p><small>Borrowed at: {{ active_record.borrowed_at }}</small></p>
+        {% endif %}
       {% else %}
         <p><strong>Status:</strong> Available</p>
       {% endif %}
@@ -20,7 +22,7 @@
             <form method="post" action="{% url 'borrow_book' book.pk %}">{% csrf_token %}
               <button class="btn btn-primary">Borrow</button>
             </form>
-          {% elif user_has_borrowed %}
+          {% elif book.borrowed_by == user %}
             <form method="post" action="{% url 'return_book' book.pk %}">{% csrf_token %}
               <button class="btn btn-warning">Return Book</button>
             </form>

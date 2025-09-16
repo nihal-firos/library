@@ -58,6 +58,7 @@ def borrow_book(request, pk):
 
     if request.method == 'POST':
         book.is_borrowed = True
+        book.borrowed_by = request.user
         book.save()
         BorrowRecord.objects.create(user=request.user, book=book)
         messages.success(request, f'You have borrowed \"{book.title}\". Enjoy!')
@@ -75,7 +76,14 @@ def return_book(request, pk):
         record.returned_at = timezone.now()
         record.save()
         book.is_borrowed = False
+        book.borrowed_by = None
         book.save()
+
+        record = BorrowRecord.objects.filter(user=request.user, book=book, returned_at__isnull=True).first()
+        if record:
+            record.returned_at = timezone.now()
+            record.save()
+
         messages.success(request, f'You have returned \"{book.title}\". Thanks!')
     return redirect('book_detail', pk=pk)
 
